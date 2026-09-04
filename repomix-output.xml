@@ -41,7 +41,7 @@ The content is organized as follows:
 
 <directory_structure>
 games/
-  managment/
+  management/
     commands/
       __init__.py
       create_admin.py
@@ -109,11 +109,11 @@ requirements.txt
 <files>
 This section contains the contents of the repository's files.
 
-<file path="games/managment/commands/__init__.py">
+<file path="games/management/commands/__init__.py">
 
 </file>
 
-<file path="games/managment/commands/create_admin.py">
+<file path="games/management/commands/create_admin.py">
 import os
 from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand
@@ -131,7 +131,7 @@ class Command(BaseCommand):
             self.stdout.write(self.style.SUCCESS('Суперпользователь создан!'))
 </file>
 
-<file path="games/managment/__init__.py">
+<file path="games/management/__init__.py">
 
 </file>
 
