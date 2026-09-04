@@ -6,7 +6,7 @@
    
  ##  Возможности
 
-- ⚡ **Прямая покупка без корзины** — осознанное продуктовое решение для цифровых товаров: игра покупается в один клик (как на GGSale и Steam)
+-  **Прямая покупка без корзины** — осознанное продуктовое решение для цифровых товаров: игра покупается в один клик (как на GGSale и Steam)
 - **Система заказов** — оформление, статусы и история покупок в личном кабинете
 -  **Поиск и сортировка** каталога по названию, цене и новизне
 -  **Категории (жанры)** с SEO-friendly URL (slug)
@@ -26,10 +26,10 @@
 git clone https://github.com/shinotori/7gamestore.git
 cd 7gamestore
 python -m venv venv
-venv\Scripts\activate        # Windows
+venv\Scripts\activate       
 pip install -r requirements.txt
 python manage.py migrate
-python manage.py createsuperuser   # для входа в админку
+python manage.py createsuperuser   
 python manage.py runserver
 ```
 

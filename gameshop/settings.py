@@ -38,12 +38,14 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
 ]
 
 ROOT_URLCONF = 'gameshop.urls'
@@ -68,11 +70,10 @@ WSGI_APPLICATION = 'gameshop.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/6.1/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': Path(os.environ.get('DB_PATH', BASE_DIR / 'db.sqlite3')),
     }
 }
 
@@ -110,8 +111,8 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.1/howto/static-files/
-STATIC_ROOT = BASE_DIR / 'staticfiles' 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 
 EMAIL_BACKEND = os.environ.get(
@@ -133,4 +134,10 @@ CSRF_TRUSTED_ORIGINS = [
     'https://*.railway.app',
     'http://127.0.0.1:8000',
     'http://localhost:8000',
+]
+CSRF_TRUSTED_ORIGINS = [
+    o for o in os.environ.get(
+        'CSRF_TRUSTED_ORIGINS',
+        'http://127.0.0.1:8000,http://localhost:8000'
+    ).split(',') if o
 ]
