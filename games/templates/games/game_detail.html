@@ -1,0 +1,35 @@
+{% extends 'games/base.html' %}
+{% block title %}{{ game.title }} — 7GAMEstore{% endblock %}
+
+{% block content %}
+<div class="row g-5 my-4">
+    <div class="col-md-6">
+        {% if game.image_url %}
+            <img src="{{ game.image_url }}" class="img-fluid rounded-4 shadow-sm" alt="{{ game.title }}" style="width: 100%; object-fit: cover; max-height: 450px;">
+        {% else %}
+            <div class="d-flex align-items-center justify-content-center bg-light rounded-4 shadow-sm" style="height: 450px;">
+                <i class="bi bi-image fs-1 text-muted"></i>
+            </div>
+        {% endif %}
+    </div>
+    <div class="col-md-6">
+        <span class="badge px-3 py-2 mb-3" style="background-color: #e0e7ff; color: #7777e7;">{{ game.category.name }}</span>
+        <h1 class="fw-bold text-dark mb-3 display-5">{{ game.title }}</h1>
+        <p class="text-muted fs-5 mb-4" style="line-height: 1.6;">{{ game.description }}</p>
+        
+        <div class="d-flex align-items-center gap-4 mb-4 p-3 bg-light rounded-3">
+            <span class="fs-2 fw-bold text-success mb-0">{{ game.price }} ₽</span>
+            <span class="badge bg-success bg-opacity-10 text-success px-3 py-2">
+                <i class="bi bi-patch-check-fill me-1"></i> Лицензия
+            </span>
+        </div>
+
+        <a href="{% url 'orders:checkout' game.id %}" class="btn btn-lg px-5 py-3 fw-bold text-white shadow-sm" style="background-color: #7777e7; border-radius: 12px;">
+            <i class="bi bi-cart-check me-2"></i>Купить сейчас
+        </a>
+        <a href="{% url 'games:catalog' %}" class="btn btn-lg btn-outline-secondary px-4 py-3 fw-bold ms-2" style="border-radius: 12px;">
+            Назад в каталог
+        </a>
+    </div>
+</div>
+{% endblock %}

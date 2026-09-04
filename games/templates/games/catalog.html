@@ -1,0 +1,98 @@
+{% extends 'games/base.html' %}
+
+{% block title %}
+    {% if category %}{{ category.name }} — 7GAMEstore{% else %}Каталог игр — 7GAMEstore{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-3 mb-4">
+        <h4 class="fw-bold text-uppercase text-warning mb-3">Жанры</h4>
+        <div class="list-group shadow-sm">
+            <a href="{% url 'games:catalog' %}" class="list-group-item list-group-item-action bg-dark text-white border-secondary {% if not category %}active text-warning border-warning{% endif %}">
+                <i class="bi bi-grid-fill me-2"></i> Все жанры
+            </a>
+            {% for cat in categories %}
+                <a href="{{ cat.get_absolute_url }}" class="list-group-item list-group-item-action bg-dark text-white border-secondary {% if category.slug == cat.slug %}active text-warning border-warning{% endif %}">
+                    <i class="bi bi-tag-fill me-2"></i> {{ cat.name }}
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="col-md-9">
+        <h2 class="fw-bold mb-4 text-uppercase border-start border-warning border-4 ps-3">
+            {% if category %}{{ category.name }}{% else %}Полный каталог игр{% endif %}
+        </h2>
+        <!-- Панель поиска и сортировки -->
+        <div class="card border-0 shadow-sm mb-4 p-3" style="border-radius: 12px; background-color: #fff;">
+            <form method="get" class="row g-2 align-items-center">
+                <!-- Строка поиска -->
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0" style="border-radius: 10px 0 0 10px; border: 1px solid #e2e7f0;">
+                            <i class="bi bi-search text-muted"></i>
+                        </span>
+                        <input type="text" name="q" class="form-control border-start-0 ps-0" 
+                               style="border-radius: 0 10px 10px 0; border: 1px solid #e2e7f0;"
+                               placeholder="Найти игру..." value="{{ query }}">
+                    </div>
+                </div>
+                
+                <!-- Сортировка -->
+                <div class="col-md-4">
+                    <select name="sort" class="form-select" style="border-radius: 10px; border: 1px solid #e2e7f0;" onchange="this.form.submit()">
+                        <option value="">По умолчанию</option>
+                        <option value="price_asc" {% if sort == 'price_asc' %}selected{% endif %}>Сначала дешевые</option>
+                        <option value="price_desc" {% if sort == 'price_desc' %}selected{% endif %}>Сначала дорогие</option>
+                        <option value="newest" {% if sort == 'newest' %}selected{% endif %}>Свежие поступления</option>
+                    </select>
+                </div>
+                
+                <!-- Кнопка (на мобильных) -->
+                <div class="col-md-2">
+                    <button type="submit" class="btn w-100 fw-bold text-white py-2" style="background-color: #7777e7; border-radius: 10px;">
+                        Найти
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        {% if query %}
+            <p class="text-muted mb-3">
+                Результаты поиска по запросу: <strong class="text-dark">«{{ query }}»</strong> 
+                <a href="?" class="text-decoration-none small ms-2" style="color: #7777e7;">✕ Сбросить</a>
+            </p>
+        {% endif %}
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for game in games %}
+                <div class="col">
+                    <div class="card h-100">
+                        <div class="position-relative">
+                            {% if game.image_url %}
+                                <img src="{{ game.image_url }}" class="card-img-top" alt="{{ game.title }}" style="height: 180px; object-fit: cover;">
+                            {% else %}
+                                <div class="d-flex align-items-center justify-content-center bg-dark text-muted" style="height: 180px;">
+                                    <i class="bi bi-image fs-1"></i>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="card-body d-flex flex-column p-3">
+                            <h5 class="card-title fw-bold text-white mb-1 fs-5 text-truncate">{{ game.title }}</h5>
+                            <p class="card-text text-secondary small flex-grow-1 mb-3">{{ game.description|truncatewords:8 }}</p>
+                            <div class="d-flex justify-content-between align-items-center pt-2 border-top border-secondary">
+                                <span class="fs-4 game-price text-success fw-bold">{{ game.price }} ₽</span>
+                                <a href="{% url 'orders:checkout' game.id %}" class="btn btn-sm btn-primary fw-bold">Купить</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="col-12 text-center py-5 card">
+                    <i class="bi bi-search text-muted display-3 mb-3"></i>
+                    <h4 class="text-secondary">В этой категории пока нет игр</h4>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

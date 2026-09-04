@@ -1,0 +1,16 @@
+# База данных и секреты
+db.sqlite3
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Виртуальное окружение
+venv/
+myenv/
+env/
+
+# Редакторы
+.idea/
+.vscode/
